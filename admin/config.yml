@@ -28,7 +28,16 @@ collections:
             summary: "{{title}}"
             fields:
               - { label: "Título do projeto", name: "title", widget: "string" }
-              - { label: "Categoria (ex: Contabilidade + Dados + BI)", name: "tag", widget: "string", required: false }
+              - label: "Área principal"
+                name: "category"
+                widget: "select"
+                options:
+                  - { label: "Contabilidade & Finanças", value: "contabilidade" }
+                  - { label: "Informática & Tecnologia", value: "informatica" }
+                  - { label: "Análise de Dados & BI", value: "dados" }
+                hint: "Usado para agrupar o projeto na página de Projetos."
+              - { label: "Etiqueta (ex: Contabilidade + Dados + BI)", name: "tag", widget: "string", required: false, hint: "Texto livre, mostrado como subtítulo do projeto." }
+              - { label: "Mostrar em destaque na página inicial?", name: "featured", widget: "boolean", default: false, hint: "Máximo recomendado: 6 projetos em destaque." }
               - { label: "Descrição", name: "description", widget: "markdown", required: false, hint: "Pode ser tão extensa quanto precisar." }
               - { label: "Imagem de capa", name: "image", widget: "image", required: false }
               - { label: "Vídeo (link do YouTube/Vimeo ou ficheiro)", name: "video", widget: "string", required: false }
@@ -59,6 +68,7 @@ collections:
             widget: "object"
             fields:
               - { label: "Nome", name: "name", widget: "string" }
+              - { label: "Fotografia", name: "photo", widget: "image", required: false }
               - { label: "Iniciais (para o logo)", name: "initials", widget: "string" }
               - { label: "Frase de posicionamento", name: "tagline", widget: "string" }
               - { label: "Localização", name: "location", widget: "string" }

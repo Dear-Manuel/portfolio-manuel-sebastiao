@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projetos — Manuel Sebastião</title>
+<meta name="description" content="Todos os projetos de Manuel Sebastião — Contabilidade, Informática, Análise de Dados e Business Intelligence.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="ledger-bg" aria-hidden="true"></div>
+
+<header class="nav" id="top">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-mark" id="nav-name">MS</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html#sobre">Sobre</a>
+      <a href="index.html#competencias">Competências</a>
+      <a href="projetos.html" class="active">Projetos</a>
+      <a href="index.html#formacao">Formação</a>
+      <a href="index.html#contacto" class="nav-cta">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="page-header">
+    <a href="index.html" class="back-link">← Início</a>
+    <span class="section-index">Arquivo</span>
+    <h1>Todos os projetos</h1>
+    <p class="page-header-sub" id="projectsCount">—</p>
+    <div class="category-filters" id="categoryFilters"></div>
+  </section>
+
+  <section class="section section-top-flush" id="projetos">
+    <div class="projects-list" id="projectsList"></div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>© <span id="year"></span> <span id="footerName">Manuel Sebastião</span></p>
+</footer>
+
+<script src="script.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => initProjectsPage());</script>
+</body>
+</html>

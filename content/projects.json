@@ -2,7 +2,9 @@
   "items": [
     {
       "title": "Análise Contabilística e Financeira com Power BI",
+      "category": "dados",
       "tag": "Contabilidade + Dados + BI",
+      "featured": true,
       "description": "EDITAR: descreva o projeto — que dados usou, que problema resolveu, que indicadores o dashboard mostra. Pode escrever quanto quiser aqui, incluindo parágrafos, listas, etc.",
       "image": "",
       "video": "",
@@ -12,7 +14,9 @@
     },
     {
       "title": "TravelManager 2.0",
+      "category": "informatica",
       "tag": "Informática + Sistemas de Informação + Gestão",
+      "featured": true,
       "description": "EDITAR: descreva o sistema — que problema resolve, tecnologias usadas, funcionalidades principais.",
       "image": "",
       "video": "",
@@ -22,7 +26,9 @@
     },
     {
       "title": "Plataforma Digital Njila",
+      "category": "informatica",
       "tag": "Informática + Requisitos + Arquitetura",
+      "featured": true,
       "description": "Colaboração na definição de requisitos técnicos e arquitetura de uma plataforma digital de serviços — área pública e área de gestão interna, incluindo módulo de agendamento, acompanhamento de processos e dashboard com Power BI.",
       "image": "",
       "video": "",

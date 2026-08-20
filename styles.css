@@ -122,6 +122,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .nav-links a:hover { color: var(--text-primary); }
+.nav-links a.active { color: var(--accent-cyan); }
 
 .nav-cta {
   color: var(--accent-cyan) !important;
@@ -160,7 +161,34 @@ a { color: inherit; text-decoration: none; }
   padding: 96px 24px 64px;
 }
 
-.hero-inner { max-width: 760px; }
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 48px;
+  align-items: center;
+}
+
+.hero-inner { max-width: 640px; }
+
+.hero-photo-wrap { display: flex; justify-content: center; }
+
+.hero-photo {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  padding: 4px;
+  background: conic-gradient(from 180deg, var(--accent-cyan), var(--accent-violet), var(--accent-cyan));
+  box-shadow: 0 0 60px rgba(34, 211, 238, 0.15);
+}
+
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--bg-base);
+  display: block;
+}
 
 .eyebrow {
   font-family: var(--font-mono);
@@ -273,6 +301,29 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 48px;
 }
 
+.section-head-split {
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.link-arrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent-cyan);
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+
+.link-arrow:hover { opacity: 0.7; }
+
+.empty-note {
+  color: var(--text-muted);
+  font-size: 14px;
+  font-family: var(--font-mono);
+}
+
 .section-index {
   font-family: var(--font-mono);
   font-size: 13px;
@@ -352,8 +403,155 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ============================================
-   PROJECTS
+   PROJECTS PREVIEW (Home) — cartões compactos
    ============================================ */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.project-card-compact {
+  display: block;
+  background: var(--bg-surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.project-card-compact:hover {
+  border-color: rgba(34, 211, 238, 0.4);
+  transform: translateY(-2px);
+}
+
+.compact-media {
+  aspect-ratio: 16 / 10;
+  background: var(--bg-surface-alt);
+  overflow: hidden;
+}
+
+.compact-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.compact-media-empty {
+  background-image: repeating-linear-gradient(
+    135deg, var(--line), var(--line) 1px, transparent 1px, transparent 12px
+  );
+}
+
+.compact-body { padding: 20px; }
+
+.compact-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.compact-body h3 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.compact-summary {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.featured-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--bg-base);
+  background: var(--accent-cyan);
+  border-radius: 3px;
+  padding: 3px 7px;
+}
+
+.category-pill {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  border-radius: 3px;
+  padding: 3px 8px;
+  border: 1px solid var(--line-strong);
+  color: var(--text-secondary);
+}
+
+.category-pill.cat-contabilidade { border-color: rgba(34, 211, 238, 0.35); color: var(--accent-cyan); }
+.category-pill.cat-informatica { border-color: rgba(139, 92, 246, 0.35); color: var(--accent-violet); }
+.category-pill.cat-dados { border-color: rgba(245, 247, 250, 0.25); color: var(--text-primary); }
+
+/* ============================================
+   PÁGINA PROJETOS — cabeçalho + filtros + grupos
+   ============================================ */
+.page-header {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 64px 24px 40px;
+}
+
+.back-link {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+}
+
+.back-link:hover { color: var(--accent-cyan); }
+
+.page-header h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  margin: 10px 0 8px;
+}
+
+.page-header-sub {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+}
+
+.category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-chip {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  border: 1px solid var(--line-strong);
+  border-radius: 100px;
+  padding: 8px 16px;
+  transition: all 0.15s ease;
+}
+
+.filter-chip:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+.filter-chip span { color: var(--text-muted); margin-left: 4px; }
+
+.section-top-flush { padding-top: 0; border-top: none; }
+
+.category-block { margin-bottom: 56px; }
+.category-block:last-child { margin-bottom: 0; }
+
+.category-heading {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line-strong);
+}
 .projects-list {
   display: flex;
   flex-direction: column;
@@ -535,6 +733,12 @@ a { color: inherit; text-decoration: none; }
   .hero-stats { grid-template-columns: 1fr; }
   .hero-stats div { border-right: none; border-bottom: 1px solid var(--line); }
   .hero-stats div:last-child { border-bottom: none; }
+  .hero-grid { grid-template-columns: 1fr; text-align: center; }
+  .hero-inner { max-width: none; }
+  .hero-tagline { text-align: left; }
+  .hero-photo-wrap { order: -1; }
+  .hero-photo { width: 160px; height: 160px; }
+  .projects-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 720px) {

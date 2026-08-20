@@ -23,7 +23,7 @@
     <nav class="nav-links" id="navLinks">
       <a href="#sobre">Sobre</a>
       <a href="#competencias">Competências</a>
-      <a href="#projetos">Projetos</a>
+      <a href="projetos.html">Projetos</a>
       <a href="#formacao">Formação</a>
       <a href="#contacto" class="nav-cta">Contacto</a>
     </nav>
@@ -33,15 +33,18 @@
 <main>
 
   <section class="hero" id="hero">
-    <div class="hero-inner">
-      <p class="eyebrow">Nº 001 · Registo de perfil</p>
-      <h1 class="hero-name" id="heroName">—</h1>
-      <p class="hero-tagline" id="heroTagline">—</p>
-      <p class="hero-statement" id="heroStatement">—</p>
-      <div class="hero-actions">
-        <a href="#projetos" class="btn btn-primary">Ver projetos</a>
-        <a href="#contacto" class="btn btn-ghost">Contactar</a>
+    <div class="hero-grid">
+      <div class="hero-inner">
+        <p class="eyebrow">Nº 001 · Registo de perfil</p>
+        <h1 class="hero-name" id="heroName">—</h1>
+        <p class="hero-tagline" id="heroTagline">—</p>
+        <p class="hero-statement" id="heroStatement">—</p>
+        <div class="hero-actions">
+          <a href="projetos.html" class="btn btn-primary">Ver projetos</a>
+          <a href="#contacto" class="btn btn-ghost">Contactar</a>
+        </div>
       </div>
+      <div class="hero-photo-wrap" id="heroPhotoWrap"></div>
     </div>
     <dl class="hero-stats" id="heroStats"></dl>
   </section>
@@ -62,12 +65,15 @@
     <div class="skills-grid" id="skillsGrid"></div>
   </section>
 
-  <section class="section" id="projetos">
-    <div class="section-head">
-      <span class="section-index">03</span>
-      <h2>Projetos</h2>
+  <section class="section" id="projetos-preview">
+    <div class="section-head section-head-split">
+      <div>
+        <span class="section-index">03</span>
+        <h2>Projetos em destaque</h2>
+      </div>
+      <a href="projetos.html" class="link-arrow">Ver todos os projetos →</a>
     </div>
-    <div class="projects-list" id="projectsList"></div>
+    <div class="projects-grid" id="projectsPreviewGrid"></div>
   </section>
 
   <section class="section" id="formacao">
@@ -96,5 +102,6 @@
 </footer>
 
 <script src="script.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => initHomePage());</script>
 </body>
 </html>
