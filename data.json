@@ -1,40 +1,64 @@
 {
   "profile": {
-    "name": "Manuel Sebastião",
-    "photo": "",
-    "initials": "MS",
-    "tagline": "Contabilidade & Finanças · Informática & Tecnologia · Análise de Dados & Business Intelligence",
-    "location": "Luanda, Angola",
-    "email": "dearmanuelsebastiao@gmail.com",
-    "linkedin": "",
     "github": "",
-    "heroStatement": "Formação em Contabilidade e Finanças, com base sólida em Informática e especialização contínua em Análise de Dados e Business Intelligence.",
+    "name": "Manuel Sebastião",
+    "tagline": "Contabilidade & Finanças · Informática & Tecnologia · Análise de Dados & Business Intelligence",
+    "initials": "MS",
     "aboutParagraphs": [
       "Sou estudante de Contabilidade e Finanças no ensino superior, com uma base técnica que vem do meu percurso em Informática no ensino médio — a área onde tenho mais domínio prático.",
       "Estou atualmente a especializar-me em Análise de Dados e Power BI, unindo o rigor da contabilidade à capacidade de transformar números em informação útil para a tomada de decisão.",
       "O meu objetivo é aplicar tecnologia e dados a processos contabilísticos e financeiros reais — não apenas analisar dados, mas entender o que eles significam para um negócio."
-    ]
+    ],
+    "photo": "/uploads/whatsapp-image-2026-08-19-at-08.55.52.jpeg",
+    "heroStatement": "Formação em Contabilidade e Finanças, com base sólida em Informática e especialização contínua em Análise de Dados e Business Intelligence.",
+    "location": "Luanda, Angola",
+    "email": "dearmanuelsebastiao@gmail.com",
+    "linkedin": ""
   },
   "stats": [
-    { "label": "Formação principal", "value": "Contabilidade & Finanças" },
-    { "label": "Base técnica", "value": "Informática" },
-    { "label": "Em especialização", "value": "Data Analytics & BI" }
+    {
+      "label": "Formação principal",
+      "value": "Contabilidade & Finanças"
+    },
+    {
+      "label": "Base técnica",
+      "value": "Informática"
+    },
+    {
+      "label": "Em especialização",
+      "value": "Data Analytics & BI"
+    }
   ],
   "skills": [
     {
       "category": "Contabilidade & Finanças",
       "note": "Formação atual — base da identidade profissional",
-      "items": ["Contabilidade geral", "Análise financeira", "Elaboração de relatórios", "Legislação fiscal angolana"]
+      "items": [
+        "Contabilidade geral",
+        "Análise financeira",
+        "Elaboração de relatórios",
+        "Legislação fiscal angolana"
+      ]
     },
     {
       "category": "Informática & Tecnologia",
       "note": "Formação de base — maior domínio prático",
-      "items": ["Ofimática avançada", "Sistemas de informação", "Suporte técnico", "Fundamentos de programação"]
+      "items": [
+        "Ofimática avançada",
+        "Sistemas de informação",
+        "Suporte técnico",
+        "Fundamentos de programação"
+      ]
     },
     {
       "category": "Análise de Dados & BI",
       "note": "Especialização em curso",
-      "items": ["Power BI", "Excel avançado", "Modelação de dados", "Dashboards e reporting"]
+      "items": [
+        "Power BI",
+        "Excel avançado",
+        "Modelação de dados",
+        "Dashboards e reporting"
+      ]
     }
   ],
   "education": [
