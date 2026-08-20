@@ -530,28 +530,122 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--font-mono);
   font-size: 12.5px;
   color: var(--text-secondary);
+  background: transparent;
   border: 1px solid var(--line-strong);
   border-radius: 100px;
   padding: 8px 16px;
+  cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .filter-chip:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
 .filter-chip span { color: var(--text-muted); margin-left: 4px; }
 
+.filter-chip.active {
+  background: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  color: var(--bg-base);
+}
+
+.filter-chip.active span { color: rgba(6, 11, 20, 0.6); }
+
 .section-top-flush { padding-top: 0; border-top: none; }
 
-.category-block { margin-bottom: 56px; }
-.category-block:last-child { margin-bottom: 0; }
-
-.category-heading {
-  font-family: var(--font-display);
-  font-size: 20px;
-  color: var(--text-primary);
-  margin-bottom: 20px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--line-strong);
+.projects-grid-archive {
+  grid-template-columns: repeat(3, 1fr);
 }
+
+/* ============================================
+   REVEAL ANIMATION — entrada subtil ao aparecer
+   ============================================ */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.reveal-item.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-item { opacity: 1; transform: none; transition: none; }
+}
+
+/* ============================================
+   PÁGINA DE DETALHE DE PROJETO
+   ============================================ */
+.detail-header {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 8px 24px 32px;
+}
+
+.detail-header h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  margin: 14px 0 8px;
+  line-height: 1.15;
+}
+
+.detail-tag {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.detail-media {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+
+.project-media-large {
+  aspect-ratio: 16 / 9;
+}
+
+.detail-body {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px 96px;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 56px;
+  border-top: 1px solid var(--line);
+  padding-top: 48px;
+}
+
+.detail-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.detail-desc p { margin-bottom: 16px; }
+.detail-desc strong { color: var(--text-primary); }
+.detail-desc ul { list-style: disc; padding-left: 20px; margin-bottom: 16px; }
+
+.detail-side {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.detail-side-block h4 {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.detail-side-block .project-flow { flex-direction: column; align-items: flex-start; gap: 6px; }
+.detail-side-block .project-flow .arrow { display: none; }
+
+.detail-link-btn { text-align: center; }
 .projects-list {
   display: flex;
   flex-direction: column;
@@ -730,6 +824,7 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 860px) {
   .skills-grid { grid-template-columns: 1fr; }
   .project-card { grid-template-columns: 1fr; }
+  .projects-grid-archive { grid-template-columns: repeat(2, 1fr); }
   .hero-stats { grid-template-columns: 1fr; }
   .hero-stats div { border-right: none; border-bottom: 1px solid var(--line); }
   .hero-stats div:last-child { border-bottom: none; }
@@ -739,6 +834,8 @@ a { color: inherit; text-decoration: none; }
   .hero-photo-wrap { order: -1; }
   .hero-photo { width: 160px; height: 160px; }
   .projects-grid { grid-template-columns: 1fr; }
+  .projects-grid-archive { grid-template-columns: 1fr; }
+  .detail-body { grid-template-columns: 1fr; gap: 32px; }
 }
 
 @media (max-width: 720px) {

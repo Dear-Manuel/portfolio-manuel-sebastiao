@@ -33,6 +33,28 @@ function setupMobileNav() {
   }));
 }
 
+// Efeito subtil de entrada (fade + leve deslocamento) quando os
+// cartões entram na área visível — interação discreta, sem exagero.
+function setupRevealAnimations() {
+  const items = document.querySelectorAll('.reveal-item:not(.revealed)');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('revealed'));
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => observer.observe(el));
+
+  // Rede de segurança: garante visibilidade mesmo que o observer falhe
+  setTimeout(() => items.forEach(el => el.classList.add('revealed')), 2500);
+}
+
 // Escolhe até `max` projetos para a Home: primeiro os marcados como
 // destaque (featured), depois preenche com os mais recentes (fim da
 // lista) até perfazer o total.
@@ -106,6 +128,7 @@ async function initHomePage() {
   renderContact(p);
 
   setupMobileNav();
+  setupRevealAnimations();
 }
 
 // Ordem e rótulos fixos das 3 áreas
@@ -117,60 +140,105 @@ const CATEGORY_LABELS = {
 };
 
 // ============================================
-// PÁGINA: PROJETOS (projetos.html) — agrupado por categoria
+// PÁGINA: PROJETOS (projetos.html) — grelha com filtros interativos
 // ============================================
+let __allProjectItems = [];
+
 async function initProjectsPage() {
   const { data, items } = await loadData();
   const p = data.profile;
   applyCommonChrome(p);
   document.title = `Projetos — ${p.name}`;
 
+  __allProjectItems = items.slice().reverse(); // mais recentes primeiro
+
   const countEl = document.getElementById('projectsCount');
   countEl.textContent = items.length === 1 ? '1 projeto' : `${items.length} projetos`;
 
-  const grouped = {};
-  CATEGORY_ORDER.forEach(cat => grouped[cat] = []);
-  const uncategorized = [];
-  items.slice().reverse().forEach(proj => { // mais recentes primeiro dentro de cada grupo
-    if (proj.category && grouped[proj.category]) {
-      grouped[proj.category].push(proj);
-    } else {
-      uncategorized.push(proj);
-    }
-  });
+  const counts = {};
+  CATEGORY_ORDER.forEach(cat => counts[cat] = 0);
+  __allProjectItems.forEach(proj => { if (counts[proj.category] !== undefined) counts[proj.category]++; });
 
-  // Chips de filtro (só mostra categorias com projetos)
   const filtersEl = document.getElementById('categoryFilters');
-  const activeCats = CATEGORY_ORDER.filter(cat => grouped[cat].length > 0);
-  if (filtersEl) {
-    filtersEl.innerHTML = activeCats.map(cat =>
-      `<a href="#cat-${cat}" class="filter-chip">${escapeHtml(CATEGORY_LABELS[cat])} <span>${grouped[cat].length}</span></a>`
+  const activeCats = CATEGORY_ORDER.filter(cat => counts[cat] > 0);
+  filtersEl.innerHTML = `<button class="filter-chip active" data-filter="all">Todos <span>${__allProjectItems.length}</span></button>` +
+    activeCats.map(cat =>
+      `<button class="filter-chip" data-filter="${cat}">${escapeHtml(CATEGORY_LABELS[cat])} <span>${counts[cat]}</span></button>`
     ).join('');
+
+  filtersEl.querySelectorAll('.filter-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      filtersEl.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyProjectFilter(btn.dataset.filter);
+    });
+  });
+
+  renderProjectsGrid(__allProjectItems);
+  setupMobileNav();
+  setupRevealAnimations();
+}
+
+function applyProjectFilter(cat) {
+  const filtered = cat === 'all' ? __allProjectItems : __allProjectItems.filter(p => p.category === cat);
+  renderProjectsGrid(filtered);
+  setupRevealAnimations();
+}
+
+function renderProjectsGrid(items) {
+  const listEl = document.getElementById('projectsList');
+  listEl.innerHTML = items.length
+    ? items.map(renderCompactCard).join('')
+    : `<p class="empty-note">Sem projetos nesta área ainda.</p>`;
+}
+
+// ============================================
+// PÁGINA: DETALHE DE UM PROJETO (projeto.html)
+// ============================================
+async function initProjectDetailPage() {
+  const { data, items } = await loadData();
+  const p = data.profile;
+  applyCommonChrome(p);
+
+  const slug = new URLSearchParams(window.location.search).get('slug');
+  const proj = items.find(it => slugify(it.title) === slug);
+  const contentEl = document.getElementById('detailContent');
+
+  if (!proj) {
+    contentEl.innerHTML = `<div class="page-header"><p class="empty-note">Projeto não encontrado.</p></div>`;
+    setupMobileNav();
+    return;
   }
 
-  const listEl = document.getElementById('projectsList');
-  let html = '';
-  activeCats.forEach(cat => {
-    html += `
-      <div class="category-block" id="cat-${cat}">
-        <h2 class="category-heading">${escapeHtml(CATEGORY_LABELS[cat])}</h2>
-        <div class="projects-list">
-          ${grouped[cat].map(renderFullCard).join('')}
-        </div>
+  document.title = `${proj.title} — ${p.name}`;
+
+  const mediaHtml = renderProjectMedia(proj, true);
+  const descHtml = renderMarkdown(proj.description);
+  const flow = (proj.flow || []).map((step, i, arr) =>
+    `<span>${escapeHtml(step)}</span>` + (i < arr.length - 1 ? `<span class="arrow">→</span>` : '')
+  ).join('');
+  const tools = (proj.tools || []).map(t => `<span>${escapeHtml(t)}</span>`).join('');
+  const catLabel = CATEGORY_LABELS[proj.category] || '';
+
+  contentEl.innerHTML = `
+    <section class="detail-header">
+      <div class="compact-meta">
+        ${proj.featured ? `<span class="featured-badge">Destaque</span>` : ''}
+        ${catLabel ? `<span class="category-pill cat-${escapeAttr(proj.category)}">${escapeHtml(catLabel)}</span>` : ''}
       </div>
-    `;
-  });
-  if (uncategorized.length) {
-    html += `
-      <div class="category-block" id="cat-outros">
-        <h2 class="category-heading">Outros</h2>
-        <div class="projects-list">
-          ${uncategorized.map(renderFullCard).join('')}
-        </div>
-      </div>
-    `;
-  }
-  listEl.innerHTML = html || `<p class="empty-note">Ainda sem projetos publicados. Adicione o primeiro no painel /admin.</p>`;
+      <h1>${escapeHtml(proj.title)}</h1>
+      ${proj.tag ? `<p class="detail-tag">${escapeHtml(proj.tag)}</p>` : ''}
+    </section>
+    ${mediaHtml ? `<section class="detail-media">${mediaHtml}</section>` : ''}
+    <section class="detail-body">
+      <div class="detail-desc">${descHtml}</div>
+      <aside class="detail-side">
+        ${flow ? `<div class="detail-side-block"><h4>Processo</h4><div class="project-flow">${flow}</div></div>` : ''}
+        ${tools ? `<div class="detail-side-block"><h4>Ferramentas</h4><div class="project-tools">${tools}</div></div>` : ''}
+        ${proj.link ? `<a href="${escapeAttr(proj.link)}" target="_blank" rel="noopener" class="btn btn-primary detail-link-btn">Ver projeto →</a>` : ''}
+      </aside>
+    </section>
+  `;
 
   setupMobileNav();
 }
@@ -185,7 +253,7 @@ function renderCompactCard(proj) {
   const summary = plainTextSummary(proj.description, 110);
   const catLabel = CATEGORY_LABELS[proj.category] || '';
   return `
-    <a class="project-card-compact" href="projetos.html#p-${slugify(proj.title)}">
+    <a class="project-card-compact reveal-item" href="projeto.html?slug=${slugify(proj.title)}">
       ${cover}
       <div class="compact-body">
         <div class="compact-meta">
@@ -196,40 +264,6 @@ function renderCompactCard(proj) {
         <p class="compact-summary">${escapeHtml(summary)}</p>
       </div>
     </a>
-  `;
-}
-
-// ============================================
-// RENDER: cartão completo (usado na página Projetos)
-// ============================================
-function renderFullCard(proj) {
-  const flow = (proj.flow || []).map((step, i, arr) =>
-    `<span>${escapeHtml(step)}</span>` + (i < arr.length - 1 ? `<span class="arrow">→</span>` : '')
-  ).join('');
-  const tools = (proj.tools || []).map(t => `<span>${escapeHtml(t)}</span>`).join('');
-  const titleHtml = proj.link
-    ? `<a href="${escapeAttr(proj.link)}" target="_blank" rel="noopener">${escapeHtml(proj.title)}</a>`
-    : escapeHtml(proj.title);
-  const mediaHtml = renderProjectMedia(proj);
-  const descHtml = renderMarkdown(proj.description);
-
-  return `
-    <article class="project-card" id="p-${slugify(proj.title)}">
-      <div>
-        <div class="compact-meta">
-          ${proj.featured ? `<span class="featured-badge">Destaque</span>` : ''}
-          ${proj.category ? `<span class="category-pill cat-${escapeAttr(proj.category)}">${escapeHtml(CATEGORY_LABELS[proj.category] || '')}</span>` : ''}
-        </div>
-        <span class="project-tag">${escapeHtml(proj.tag || '')}</span>
-        <h3>${titleHtml}</h3>
-        ${mediaHtml}
-      </div>
-      <div>
-        <div class="project-desc">${descHtml}</div>
-        ${flow ? `<div class="project-flow">${flow}</div>` : ''}
-        ${tools ? `<div class="project-tools">${tools}</div>` : ''}
-      </div>
-    </article>
   `;
 }
 
@@ -273,18 +307,19 @@ function vimeoEmbedUrl(url) {
   return m ? `https://player.vimeo.com/video/${m[1]}` : null;
 }
 
-function renderProjectMedia(proj) {
+function renderProjectMedia(proj, large) {
   let html = '';
+  const sizeClass = large ? 'project-media-large' : '';
   if (proj.video) {
     const yt = youtubeEmbedUrl(proj.video);
     const vm = vimeoEmbedUrl(proj.video);
     if (yt || vm) {
-      html += `<div class="project-media"><iframe src="${escapeAttr(yt || vm)}" loading="lazy" allowfullscreen title="${escapeAttr(proj.title)}"></iframe></div>`;
+      html += `<div class="project-media ${sizeClass}"><iframe src="${escapeAttr(yt || vm)}" loading="lazy" allowfullscreen title="${escapeAttr(proj.title)}"></iframe></div>`;
     } else {
-      html += `<div class="project-media"><video src="${escapeAttr(proj.video)}" controls preload="metadata"></video></div>`;
+      html += `<div class="project-media ${sizeClass}"><video src="${escapeAttr(proj.video)}" controls preload="metadata"></video></div>`;
     }
   } else if (proj.image) {
-    html += `<div class="project-media"><img src="${escapeAttr(proj.image)}" alt="${escapeAttr(proj.title)}" loading="lazy"></div>`;
+    html += `<div class="project-media ${sizeClass}"><img src="${escapeAttr(proj.image)}" alt="${escapeAttr(proj.title)}" loading="lazy"></div>`;
   }
   return html;
 }

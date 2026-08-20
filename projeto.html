@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Projetos — Manuel Sebastião</title>
-<meta name="description" content="Todos os projetos de Manuel Sebastião — Contabilidade, Informática, Análise de Dados e Business Intelligence.">
+<title>Projeto — Manuel Sebastião</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -23,27 +22,18 @@
     <nav class="nav-links" id="navLinks">
       <a href="index.html#sobre">Sobre</a>
       <a href="index.html#competencias">Competências</a>
-      <a href="projetos.html" class="active">Projetos</a>
+      <a href="projetos.html">Projetos</a>
       <a href="index.html#formacao">Formação</a>
       <a href="index.html#contacto" class="nav-cta">Contacto</a>
     </nav>
   </div>
 </header>
 
-<main>
-
+<main id="detailRoot">
   <section class="page-header">
-    <a href="index.html" class="back-link">← Início</a>
-    <span class="section-index">Arquivo</span>
-    <h1>Todos os projetos</h1>
-    <p class="page-header-sub" id="projectsCount">—</p>
-    <div class="category-filters" id="categoryFilters"></div>
+    <a href="projetos.html" class="back-link">← Todos os projetos</a>
   </section>
-
-  <section class="section section-top-flush" id="projetos">
-    <div class="projects-grid projects-grid-archive" id="projectsList"></div>
-  </section>
-
+  <div id="detailContent"><p class="empty-note" style="padding: 0 24px;">A carregar…</p></div>
 </main>
 
 <footer class="footer">
@@ -51,6 +41,6 @@
 </footer>
 
 <script src="script.js"></script>
-<script>document.addEventListener('DOMContentLoaded', () => initProjectsPage());</script>
+<script>document.addEventListener('DOMContentLoaded', () => initProjectDetailPage());</script>
 </body>
 </html>
