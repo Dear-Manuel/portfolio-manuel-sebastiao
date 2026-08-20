@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "theme": "Análise de Dados",
+      "image": "uploads/publications/analise-de-dados.jpg",
+      "text": "Dados não contam histórias sozinhos — é a análise que lhes dá voz."
+    },
+    {
+      "theme": "Business Intelligence",
+      "image": "uploads/publications/business-intelligence.png",
+      "text": "Do dado bruto ao dashboard: transformar informação em decisão."
+    },
+    {
+      "theme": "Finanças Pessoais",
+      "image": "uploads/publications/financas-pessoais.jpg",
+      "text": "Investir é adiar o consumo de hoje para construir o amanhã."
+    },
+    {
+      "theme": "Contabilidade",
+      "image": "uploads/publications/contabilidade.jpg",
+      "text": "A contabilidade é a linguagem exata dos negócios."
+    },
+    {
+      "theme": "Tecnologia Financeira",
+      "image": "uploads/publications/tecnologia-financeira.jpg",
+      "text": "A tecnologia não substitui a análise financeira — potencia-a."
+    },
+    {
+      "theme": "Visualização de Dados",
+      "image": "uploads/publications/visualizacao-de-dados.jpg",
+      "text": "Por trás de cada gráfico, uma pergunta à espera de resposta."
+    }
+  ]
+}

@@ -54,6 +54,25 @@ collections:
                 field: { label: "Ferramenta", name: "tool", widget: "string" }
 
   # ============================================
+  # PUBLICAÇÕES — carrossel de imagens temáticas na Home
+  # ============================================
+  - name: "publications"
+    label: "Publicações"
+    files:
+      - file: "content/publications.json"
+        label: "Carrossel de Publicações"
+        name: "publications"
+        fields:
+          - label: "Publicações"
+            name: "items"
+            widget: "list"
+            summary: "{{theme}}"
+            fields:
+              - { label: "Tema", name: "theme", widget: "string" }
+              - { label: "Imagem", name: "image", widget: "image" }
+              - { label: "Frase curta", name: "text", widget: "text", hint: "Uma frase curta ou pensamento sobre o tema. Não é uma descrição longa." }
+
+  # ============================================
   # PERFIL — nome, sobre mim, competências, formação
   # ============================================
   - name: "profile"

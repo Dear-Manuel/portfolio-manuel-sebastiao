@@ -1,17 +1,120 @@
 // ============================================
+// CARROSSEL DE PUBLICAÇÕES (Home)
+// ============================================
+let __carouselTimer = null;
+
+function cardsPerPage() {
+  if (window.innerWidth < 720) return 1;
+  if (window.innerWidth < 1080) return 2;
+  return 3;
+}
+
+function initCarousel(items) {
+  const track = document.getElementById('carouselTrack');
+  const dotsEl = document.getElementById('carouselDots');
+  const section = document.getElementById('publicacoes');
+  if (!items || items.length === 0) {
+    if (section) section.style.display = 'none';
+    return;
+  }
+
+  let perPage = cardsPerPage();
+  let pages = chunk(items, perPage);
+  let current = 0;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function renderPages() {
+    track.innerHTML = pages.map(pageItems => `
+      <div class="carousel-page">
+        ${pageItems.map(renderPublicationCard).join('')}
+      </div>
+    `).join('');
+    dotsEl.innerHTML = pages.map((_, i) =>
+      `<button class="carousel-dot${i === current ? ' active' : ''}" aria-label="Ir para grupo ${i + 1}" data-i="${i}"></button>`
+    ).join('');
+    dotsEl.querySelectorAll('.carousel-dot').forEach(dot => {
+      dot.addEventListener('click', () => goTo(parseInt(dot.dataset.i, 10)));
+    });
+    goTo(current, true);
+  }
+
+  function goTo(i, skipAnim) {
+    current = ((i % pages.length) + pages.length) % pages.length;
+    track.style.transition = skipAnim ? 'none' : '';
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dotsEl.querySelectorAll('.carousel-dot').forEach((d, idx) => d.classList.toggle('active', idx === current));
+  }
+
+  function startAuto() {
+    stopAuto();
+    if (reducedMotion || pages.length <= 1) return;
+    __carouselTimer = setInterval(() => goTo(current + 1), 4500);
+  }
+  function stopAuto() {
+    if (__carouselTimer) clearInterval(__carouselTimer);
+  }
+
+  renderPages();
+  startAuto();
+
+  const carouselEl = document.getElementById('publicationsCarousel');
+  carouselEl.addEventListener('mouseenter', stopAuto);
+  carouselEl.addEventListener('mouseleave', startAuto);
+  carouselEl.addEventListener('touchstart', stopAuto, { passive: true });
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      const newPerPage = cardsPerPage();
+      if (newPerPage !== perPage) {
+        perPage = newPerPage;
+        pages = chunk(items, perPage);
+        current = 0;
+        renderPages();
+        startAuto();
+      }
+    }, 200);
+  });
+}
+
+function renderPublicationCard(pub) {
+  return `
+    <div class="publication-card">
+      <div class="publication-media"><img src="${escapeAttr(pub.image)}" alt="${escapeAttr(pub.theme)}" loading="lazy"></div>
+      <div class="publication-body">
+        <span class="publication-theme">${escapeHtml(pub.theme)}</span>
+        <p class="publication-text">${escapeHtml(pub.text)}</p>
+      </div>
+    </div>
+  `;
+}
+
+function chunk(arr, size) {
+  const out = [];
+  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+  return out;
+}
+
+// ============================================
 // CARREGAMENTO DE DADOS (partilhado pelas páginas)
 // ============================================
 async function loadData() {
-  const [profileRes, projectsRes] = await Promise.all([
+  const [profileRes, projectsRes, publicationsRes] = await Promise.all([
     fetch('data.json'),
-    fetch('content/projects.json').catch(() => null)
+    fetch('content/projects.json').catch(() => null),
+    fetch('content/publications.json').catch(() => null)
   ]);
   const data = await profileRes.json();
   let projectsData = { items: [] };
   if (projectsRes && projectsRes.ok) {
     projectsData = await projectsRes.json();
   }
-  return { data, items: projectsData.items || [] };
+  let publicationsData = { items: [] };
+  if (publicationsRes && publicationsRes.ok) {
+    publicationsData = await publicationsRes.json();
+  }
+  return { data, items: projectsData.items || [], publications: publicationsData.items || [] };
 }
 
 function applyCommonChrome(p) {
@@ -69,7 +172,7 @@ function pickFeatured(items, max) {
 // PÁGINA: HOME (index.html)
 // ============================================
 async function initHomePage() {
-  const { data, items } = await loadData();
+  const { data, items, publications } = await loadData();
   const p = data.profile;
   applyCommonChrome(p);
 
@@ -120,6 +223,9 @@ async function initHomePage() {
   if (featured.length === 0) {
     previewEl.innerHTML = `<p class="empty-note">Ainda sem projetos publicados. Adicione o primeiro no painel /admin.</p>`;
   }
+
+  // Publicações (carrossel)
+  initCarousel(publications);
 
   // Formação
   renderEducation(data.education || []);
