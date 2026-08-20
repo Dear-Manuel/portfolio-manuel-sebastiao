@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manuel Sebastião — Contabilidade, Tecnologia & Dados</title>
+<meta name="description" content="Portefólio de Manuel Sebastião — Contabilidade & Finanças, Informática e Análise de Dados & Business Intelligence.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="ledger-bg" aria-hidden="true"></div>
+
+<header class="nav" id="top">
+  <div class="nav-inner">
+    <a href="#top" class="nav-mark" id="nav-name">MS</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#sobre">Sobre</a>
+      <a href="#competencias">Competências</a>
+      <a href="#projetos">Projetos</a>
+      <a href="#formacao">Formação</a>
+      <a href="#contacto" class="nav-cta">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Nº 001 · Registo de perfil</p>
+      <h1 class="hero-name" id="heroName">—</h1>
+      <p class="hero-tagline" id="heroTagline">—</p>
+      <p class="hero-statement" id="heroStatement">—</p>
+      <div class="hero-actions">
+        <a href="#projetos" class="btn btn-primary">Ver projetos</a>
+        <a href="#contacto" class="btn btn-ghost">Contactar</a>
+      </div>
+    </div>
+    <dl class="hero-stats" id="heroStats"></dl>
+  </section>
+
+  <section class="section" id="sobre">
+    <div class="section-head">
+      <span class="section-index">01</span>
+      <h2>Sobre mim</h2>
+    </div>
+    <div class="about-body" id="aboutBody"></div>
+  </section>
+
+  <section class="section" id="competencias">
+    <div class="section-head">
+      <span class="section-index">02</span>
+      <h2>Competências</h2>
+    </div>
+    <div class="skills-grid" id="skillsGrid"></div>
+  </section>
+
+  <section class="section" id="projetos">
+    <div class="section-head">
+      <span class="section-index">03</span>
+      <h2>Projetos</h2>
+    </div>
+    <div class="projects-list" id="projectsList"></div>
+  </section>
+
+  <section class="section" id="formacao">
+    <div class="section-head">
+      <span class="section-index">04</span>
+      <h2>Formação</h2>
+    </div>
+    <div class="education-ledger" id="educationLedger"></div>
+  </section>
+
+  <section class="section section-contact" id="contacto">
+    <div class="section-head">
+      <span class="section-index">05</span>
+      <h2>Contacto</h2>
+    </div>
+    <div class="contact-body">
+      <p class="contact-lead">Disponível para oportunidades, colaborações e conversas sobre contabilidade, dados e tecnologia.</p>
+      <div class="contact-links" id="contactLinks"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>© <span id="year"></span> <span id="footerName">Manuel Sebastião</span></p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

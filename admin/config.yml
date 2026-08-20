@@ -1,0 +1,98 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Onde ficam as imagens/vídeos que carregar no painel
+media_folder: "uploads"
+public_folder: "/uploads"
+
+# Interface em português
+locale: "pt"
+
+collections:
+
+  # ============================================
+  # PROJETOS — o que aparece na secção "Projetos"
+  # ============================================
+  - name: "projects"
+    label: "Projetos"
+    files:
+      - file: "content/projects.json"
+        label: "Lista de Projetos"
+        name: "projects"
+        fields:
+          - label: "Projetos"
+            name: "items"
+            widget: "list"
+            summary: "{{title}}"
+            fields:
+              - { label: "Título do projeto", name: "title", widget: "string" }
+              - { label: "Categoria (ex: Contabilidade + Dados + BI)", name: "tag", widget: "string", required: false }
+              - { label: "Descrição", name: "description", widget: "markdown", required: false, hint: "Pode ser tão extensa quanto precisar." }
+              - { label: "Imagem de capa", name: "image", widget: "image", required: false }
+              - { label: "Vídeo (link do YouTube/Vimeo ou ficheiro)", name: "video", widget: "string", required: false }
+              - { label: "Link do projeto (site, repositório, ficheiro)", name: "link", widget: "string", required: false }
+              - label: "Etapas do processo (opcional)"
+                name: "flow"
+                widget: "list"
+                required: false
+                field: { label: "Etapa", name: "step", widget: "string" }
+              - label: "Ferramentas usadas"
+                name: "tools"
+                widget: "list"
+                required: false
+                field: { label: "Ferramenta", name: "tool", widget: "string" }
+
+  # ============================================
+  # PERFIL — nome, sobre mim, competências, formação
+  # ============================================
+  - name: "profile"
+    label: "Perfil do site"
+    files:
+      - file: "data.json"
+        label: "Dados do perfil"
+        name: "profile_data"
+        fields:
+          - label: "Perfil"
+            name: "profile"
+            widget: "object"
+            fields:
+              - { label: "Nome", name: "name", widget: "string" }
+              - { label: "Iniciais (para o logo)", name: "initials", widget: "string" }
+              - { label: "Frase de posicionamento", name: "tagline", widget: "string" }
+              - { label: "Localização", name: "location", widget: "string" }
+              - { label: "Email", name: "email", widget: "string" }
+              - { label: "LinkedIn (link completo)", name: "linkedin", widget: "string", required: false }
+              - { label: "GitHub (link completo)", name: "github", widget: "string", required: false }
+              - { label: "Frase de destaque (abaixo do nome)", name: "heroStatement", widget: "text" }
+              - label: "Parágrafos do Sobre Mim"
+                name: "aboutParagraphs"
+                widget: "list"
+                field: { label: "Parágrafo", name: "paragraph", widget: "text" }
+          - label: "Números em destaque (hero)"
+            name: "stats"
+            widget: "list"
+            summary: "{{label}}"
+            fields:
+              - { label: "Valor", name: "value", widget: "string" }
+              - { label: "Legenda", name: "label", widget: "string" }
+          - label: "Competências"
+            name: "skills"
+            widget: "list"
+            summary: "{{category}}"
+            fields:
+              - { label: "Categoria", name: "category", widget: "string" }
+              - { label: "Nota", name: "note", widget: "string", required: false }
+              - label: "Itens"
+                name: "items"
+                widget: "list"
+                field: { label: "Item", name: "item", widget: "string" }
+          - label: "Formação"
+            name: "education"
+            widget: "list"
+            summary: "{{degree}}"
+            fields:
+              - { label: "Curso/Grau", name: "degree", widget: "string" }
+              - { label: "Instituição", name: "institution", widget: "string" }
+              - { label: "Período", name: "period", widget: "string" }
+              - { label: "Nota", name: "note", widget: "string", required: false }
