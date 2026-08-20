@@ -1,5 +1,6 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: Dear-Manuel/portfolio-manuel-sebastiao
   branch: main
 
 # Onde ficam as imagens/vídeos que carregar no painel
