@@ -100,10 +100,11 @@ function chunk(arr, size) {
 // CARREGAMENTO DE DADOS (partilhado pelas páginas)
 // ============================================
 async function loadData() {
-  const [profileRes, projectsRes, publicationsRes] = await Promise.all([
+  const [profileRes, projectsRes, publicationsRes, teamRes] = await Promise.all([
     fetch('data.json'),
     fetch('content/projects.json').catch(() => null),
-    fetch('content/publications.json').catch(() => null)
+    fetch('content/publications.json').catch(() => null),
+    fetch('content/team.json').catch(() => null)
   ]);
   const data = await profileRes.json();
   let projectsData = { items: [] };
@@ -114,7 +115,11 @@ async function loadData() {
   if (publicationsRes && publicationsRes.ok) {
     publicationsData = await publicationsRes.json();
   }
-  return { data, items: projectsData.items || [], publications: publicationsData.items || [] };
+  let teamData = { enabled: false, items: [] };
+  if (teamRes && teamRes.ok) {
+    teamData = await teamRes.json();
+  }
+  return { data, items: projectsData.items || [], publications: publicationsData.items || [], team: teamData };
 }
 
 function applyCommonChrome(p) {
@@ -172,7 +177,7 @@ function pickFeatured(items, max) {
 // PÁGINA: HOME (index.html)
 // ============================================
 async function initHomePage() {
-  const { data, items, publications } = await loadData();
+  const { data, items, publications, team } = await loadData();
   const p = data.profile;
   applyCommonChrome(p);
 
@@ -227,14 +232,48 @@ async function initHomePage() {
   // Publicações (carrossel)
   initCarousel(publications);
 
+  // Equipa (opcional, desligada por defeito)
+  renderTeam(team);
+
   // Formação
   renderEducation(data.education || []);
 
   // Contacto
   renderContact(p);
 
+  renumberSectionIndexes();
   setupMobileNav();
   setupRevealAnimations();
+}
+
+function renderTeam(team) {
+  const section = document.getElementById('equipa');
+  if (!team || !team.enabled || !team.items || team.items.length === 0) {
+    if (section) section.style.display = 'none';
+    return;
+  }
+  const grid = document.getElementById('teamGrid');
+  grid.innerHTML = team.items.map(member => `
+    <div class="team-card">
+      <div class="team-photo">${member.photo ? `<img src="${escapeAttr(member.photo)}" alt="${escapeAttr(member.name)}">` : ''}</div>
+      <h3>${escapeHtml(member.name)}</h3>
+      <span class="team-role">${escapeHtml(member.role)}</span>
+    </div>
+  `).join('');
+}
+
+// Renumera os "0X" de cabeçalho de secção apenas para as secções
+// visíveis, para não deixar saltos quando uma secção opcional
+// (ex: Equipa) está desligada.
+function renumberSectionIndexes() {
+  const sections = document.querySelectorAll('main > .section');
+  let n = 1;
+  sections.forEach(sec => {
+    if (sec.style.display === 'none') return;
+    const idx = sec.querySelector('.section-index');
+    if (idx) idx.textContent = String(n).padStart(2, '0');
+    n++;
+  });
 }
 
 // Ordem e rótulos fixos das 3 áreas

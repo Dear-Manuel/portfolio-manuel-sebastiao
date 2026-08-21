@@ -73,6 +73,26 @@ collections:
               - { label: "Frase curta", name: "text", widget: "text", hint: "Uma frase curta ou pensamento sobre o tema. Não é uma descrição longa." }
 
   # ============================================
+  # EQUIPA — secção opcional, desligada por defeito
+  # ============================================
+  - name: "team"
+    label: "Equipa"
+    files:
+      - file: "content/team.json"
+        label: "Secção Equipa"
+        name: "team"
+        fields:
+          - { label: "Mostrar secção Equipa no site?", name: "enabled", widget: "boolean", default: false, hint: "Desligado por defeito. Ligue quando quiser publicar esta secção." }
+          - label: "Membros"
+            name: "items"
+            widget: "list"
+            summary: "{{name}}"
+            fields:
+              - { label: "Nome", name: "name", widget: "string" }
+              - { label: "Função / Área", name: "role", widget: "string" }
+              - { label: "Fotografia", name: "photo", widget: "image", required: false }
+
+  # ============================================
   # PERFIL — nome, sobre mim, competências, formação
   # ============================================
   - name: "profile"
