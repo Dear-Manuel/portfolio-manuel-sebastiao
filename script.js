@@ -415,20 +415,18 @@ function renderCompactCard(proj) {
 
 function renderEducation(education) {
   const eduEl = document.getElementById('educationLedger');
-  eduEl.innerHTML = '';
-  education.forEach(ed => {
-    const row = document.createElement('div');
-    row.className = 'ledger-row';
-    row.innerHTML = `
-      <div>
-        <span class="degree">${escapeHtml(ed.degree)}</span>
-        ${ed.note ? `<span class="note">${escapeHtml(ed.note)}</span>` : ''}
+  eduEl.className = 'timeline';
+  eduEl.innerHTML = education.map(ed => `
+    <div class="timeline-item">
+      <span class="timeline-dot"></span>
+      <div class="timeline-card">
+        <span class="timeline-period">${escapeHtml(ed.period)}</span>
+        <h3>${escapeHtml(ed.degree)}</h3>
+        <p class="timeline-institution">${escapeHtml(ed.institution)}</p>
+        ${ed.note ? `<span class="timeline-note">${escapeHtml(ed.note)}</span>` : ''}
       </div>
-      <div class="institution">${escapeHtml(ed.institution)}</div>
-      <div class="period">${escapeHtml(ed.period)}</div>
-    `;
-    eduEl.appendChild(row);
-  });
+    </div>
+  `).join('');
 }
 
 function renderContact(p) {
