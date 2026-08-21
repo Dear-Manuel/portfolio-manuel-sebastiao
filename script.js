@@ -214,9 +214,10 @@ async function initHomePage() {
     const card = document.createElement('div');
     card.className = 'skill-card';
     card.innerHTML = `
+      <div class="skill-icon">${specialtyIcon(cat.category)}</div>
       <h3>${escapeHtml(cat.category)}</h3>
-      <span class="skill-note">${escapeHtml(cat.note || '')}</span>
-      <ul>${(cat.items || []).map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>
+      <p class="skill-note">${escapeHtml(cat.note || '')}</p>
+      <div class="skill-pills">${(cat.items || []).map(i => `<span>${escapeHtml(i)}</span>`).join('')}</div>
     `;
     skillsEl.appendChild(card);
   });
@@ -502,6 +503,23 @@ function slugify(str) {
   return (str || '').toLowerCase()
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+// Escolhe um ícone simples (SVG inline) consoante palavras-chave no
+// nome da categoria — cobre os 3 temas principais, com um ícone
+// genérico de reserva para categorias personalizadas.
+function specialtyIcon(category) {
+  const c = (category || '').toLowerCase();
+  if (c.includes('contab') || c.includes('finan')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="13" rx="1.5"/><path d="M3 10h18"/><path d="M7 14h4"/><circle cx="16.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/></svg>`;
+  }
+  if (c.includes('informát') || c.includes('tecnolog') || c.includes('inform')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8"/><path d="M12 16v4"/><path d="M8.5 8.5l-2 2 2 2"/><path d="M15.5 8.5l2 2-2 2"/></svg>`;
+  }
+  if (c.includes('dados') || c.includes('bi') || c.includes('data') || c.includes('análise') || c.includes('analise')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V10"/><path d="M12 20V4"/><path d="M20 20v-7"/><path d="M3 20h18"/></svg>`;
+  }
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/></svg>`;
 }
 
 function escapeHtml(str) {
